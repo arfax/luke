@@ -30,7 +30,7 @@ service nginx restart
 
 
 echo "Installing Oh My Zsh!..."
-PROJECT_NAME=luke
+PROJECT_NAME=iptouch
 OHMYZSH_DIR=/home/vagrant/.oh-my-zsh
 
 if [ ! -d $OHMYZSH_DIR ]; then

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Django settings for ${PROJECT_NAME} project.
+Django settings for iptouch project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.8/topics/settings/
@@ -25,7 +25,7 @@ SECRET_KEY = '*+a9uub1)_lc7)fxhba4$%g2#&shao3o))4=_t&k7dyrr3)l47'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['iptouch.local']
 
 
 # Application definition
@@ -38,9 +38,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    # Third party apps.
     'rest_framework_swagger',
     'rest_framework',
+    'iptouch',
+    'iptouch.users'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -54,7 +55,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 
-ROOT_URLCONF = '${PROJECT_NAME}.urls'
+ROOT_URLCONF = 'iptouch.urls'
 
 TEMPLATES = [
     {
@@ -75,7 +76,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = '${PROJECT_NAME}.wsgi.application'
+WSGI_APPLICATION = 'iptouch.wsgi.application'
 
 # DJango-rest-framework configuration
 REST_FRAMEWORK = {
@@ -98,11 +99,13 @@ REST_FRAMEWORK = {
         'djangorestframework_camel_case.parser.CamelCaseJSONParser',
         'rest_framework.parsers.MultiPartParser'
     ),
-    'DEFAULT_PAGINATION_CLASS': (
-        # Your project default_pagination class project/utils/pagination.py
-        'rest_framework.pagination.PageNumberPagination',
-    ),
-    'PAGE_SIZE': 24
+    'DEFAULT_PAGINATION_CLASS':
+    'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_PAGINATION_CLASS':
+    'rest_framework.pagination.PageNumberPagination',
+    'PAGINATE_BY': 10,
+    'PAGINATE_BY_PARAM': 'page_size',
+    'MAX_PAGINATE_BY': 50
 }
 
 
@@ -139,7 +142,7 @@ JWT_AUTH = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
@@ -158,6 +161,10 @@ USE_L10N = True
 
 USE_TZ = True
 
+#
+# Flag used to know if we are in a production environment
+#
+PRODUCTION = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
